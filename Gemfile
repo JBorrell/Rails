@@ -4,6 +4,7 @@ group :test do
 	gem 'rspec-rails'
 	gem 'capybara'
 	gem 'shoulda'
+	gem 'rspec-collection_matchers'
 end
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
