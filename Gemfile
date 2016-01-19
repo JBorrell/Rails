@@ -6,6 +6,8 @@ group :test do
 	gem 'shoulda'
 	gem 'rspec-collection_matchers'
 	gem 'devise'
+	gem 'omniauth-facebook'
+	gem 'omniauth'
 end
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
