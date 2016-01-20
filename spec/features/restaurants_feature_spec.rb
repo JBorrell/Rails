@@ -20,8 +20,10 @@ feature 'restaurants' do
 	  end
   end
   context 'creating restaurants' do	
+    before do
+	    sign_in_user
+    end
 	  scenario 'prompts user to fill out a form, then displays the new restaurant' do
-		  visit '/restaurants'
 		  click_link 'Add a restaurant'
 		  fill_in 'Name', with: 'KFC'
 		  click_button 'Create Restaurant'
@@ -30,7 +32,6 @@ feature 'restaurants' do
 	  end
 	  context 'an invalid restaurants' do
 		  it 'does not let you submit a name that is too short' do
-			  visit '/restaurants'
 			  click_link 'Add a restaurant'
 			  fill_in 'Name', with: 'kf'
 			  click_button 'Create Restaurant'
@@ -54,6 +55,7 @@ feature 'restaurants' do
 	before {Restaurant.create name: 'KFC' }
 
        scenario 'let a user edit a restaurant' do
+	       sign_in_user
        visit '/restaurants'
 	click_link 'Edit KFC'
  	fill_in 'Name', with: 'Kentucky Fried Chicken'
@@ -68,6 +70,7 @@ feature 'restaurants' do
 	   before {Restaurant.create name: 'KFC'}
 
 	     scenario 'removes a restaurant when a user clicks a delete link' do
+		     sign_in_user
 	         visit '/restaurants'
                  click_link 'Delete KFC'
 	         expect(page).not_to have_content 'KFC'
@@ -75,4 +78,26 @@ feature 'restaurants' do
 	       end
 
  end 
+ context 'User not signed in' do
+
+	scenario 'shows error if user tries to add restaurant' do
+		visit '/'
+		click_link 'Add a restaurant'
+		expect(page).to have_content("You need to sign in or sign up before continuing")
+	end
+ end
+ context 'User signed in' do
+	before do
+		sign_in_user('wendys@email.com')
+		add_restaurant
+		click_link 'Sign out'
+
+	end	
+	 scenario 'user can only delete/edit restaurants they\'ve created' do
+		 sign_in_user('burgerking@email.com')
+		 click_link 'Delete Wendys'
+		 expect(page).to have_content("Not your restaurant")
+	 end
+ end
+
 end
