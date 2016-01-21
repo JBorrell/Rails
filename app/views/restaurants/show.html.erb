@@ -1,3 +1,21 @@
 <p><%= @restaurant.name %></p>
-<p><%= @restaurant.descriptions %></p>
+<p><%= @restaurant.description %></p>
 
+<% if @restaurant.reviews.any? %>
+	<ul>
+		<% @restaurant.reviews.each do |review| %>
+			<li>
+			<%= review.thoughts %> - <strong><%= review.rating %>/5</strong><br> -- 
+			<%= User.find(review.user_id).email %><br><br>
+			</li>
+		<% end %>
+	</ul>
+<% else %>
+	<p>No Reviews</p>
+<% end %><br>
+
+<% if current_user %>
+	<% if @restaurant.reviews.where(user_id: current_user.id).exists? %>
+		<%= link_to "Delete My Review", restaurant_review_path(@restaurant, current_user.id), method: :delete %> 
+	<% end %> 
+<% end %>

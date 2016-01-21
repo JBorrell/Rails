@@ -31,6 +31,12 @@ def add_restaurant(name='Wendys')
 	fill_in 'Name', with: name
 	click_button 'Create Restaurant'
 end
+def leave_review(thoughts='so so', rating=3)
+    click_link 'Review Wendys'
+		fill_in 'Thoughts', with: thoughts
+		select rating, from: 'Rating'
+		click_button 'Leave Review'
+end
 
 RSpec.configure do |config|
   # rspec-expectations config goes here. You can use an alternate
